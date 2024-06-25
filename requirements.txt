@@ -1,4 +1,4 @@
 gspread==5.11.3
 openai==1.35.3
-pandas==2.0.3
+pandas
 streamlit==1.36.0

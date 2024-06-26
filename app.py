@@ -3,6 +3,7 @@ import os
 from openai import OpenAI
 import gspread
 import pandas as pd
+from google.oauth2.service_account import Credentials
 
 MODEL = os.environ.get("MODEL")
 
@@ -27,7 +28,18 @@ def generate_answer(user_question,prompt):
   )
   return response.choices[0].message.content
 
-gc = gspread.service_account(filename='chatbot-427023-df55912e42b8.json')
+# gc = gspread.service_account(filename='chatbot-427023-df55912e42b8.json')
+credentials_info = st.secrets["google_credentials"]
+# スコープを設定
+scopes = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+
+credentials = Credentials.from_service_account_info(credentials_info, scopes=scopes)
+gc = gspread.authorize(credentials)
+
 sh = gc.open("sample_sheet_2")
 
 worksheet01 = sh.worksheet('employmentAgency')
